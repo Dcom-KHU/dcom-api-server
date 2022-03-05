@@ -21,14 +21,7 @@ public class UserServiceImpl implements UserService {
 
         if (userById.isPresent()) {
             User user = userById.get();
-            UserProfileDto userProfileDto = UserProfileDto.builder()
-                    .id(user.getId())
-                    .userId(user.getUserId())
-                    .admissionYear(user.getAdmissionYear())
-                    .realName(user.getRealName())
-                    .github(user.getGithub())
-                    .homepage(user.getHomepage())
-                    .build();
+            UserProfileDto userProfileDto = UserProfileDto.of(user);
             return Optional.of(userProfileDto);
         } else {
             return Optional.empty();
