@@ -4,6 +4,7 @@ import dcom.homepage.api.domain.users.User;
 import dcom.homepage.api.domain.users.dto.UserLoginDto;
 import dcom.homepage.api.domain.users.dto.UserProfileDto;
 import dcom.homepage.api.domain.users.repository.UserRepository;
+import dcom.homepage.api.global.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,23 +17,23 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Optional<UserProfileDto> getProfileByUserId(String userId) {
+    public UserProfileDto getProfileByUserId(String userId) throws NotFoundException {
         Optional<User> userById = userRepository.findByUserId(userId);
 
         if (userById.isPresent()) {
             User user = userById.get();
             UserProfileDto userProfileDto = UserProfileDto.of(user);
-            return Optional.of(userProfileDto);
+            return userProfileDto;
         } else {
-            return Optional.empty();
+            throw new NotFoundException("유저를 찾지 못했습니다.");
         }
     }
 
     @Override
-    public Optional<User> login(UserLoginDto userLoginDto) {
+    public User login(UserLoginDto userLoginDto) {
         String userId = userLoginDto.getUserId();
         String password = userLoginDto.getPassword();
 
@@ -41,12 +42,12 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             String current_password = user.getPassword();
             if (passwordEncoder.matches(password, current_password)) {
-                return Optional.of(user);
+                return user;
             } else {
-                return Optional.empty();
+                throw new NotFoundException("아이디 혹은 비밀 번호가 정확하지 않습니다.");
             }
         } else {
-            return Optional.empty();
+            throw new NotFoundException("아이디 혹은 비밀 번호가 정확하지 않습니다.");
         }
     }
 }

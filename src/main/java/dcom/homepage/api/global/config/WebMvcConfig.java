@@ -1,4 +1,4 @@
-package dcom.homepage.api.global.security.config;
+package dcom.homepage.api.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

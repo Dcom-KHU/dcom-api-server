@@ -28,9 +28,9 @@ public class UserAuthTest {
                 .build();
 
         // when
-        Optional<User> user = userService.login(userLoginDto);
+        User user = userService.login(userLoginDto);
 
         // then
-        Assertions.assertThat(user.isPresent()).isTrue();
+        Assertions.assertThat(user).isNotNull();
     }
 }

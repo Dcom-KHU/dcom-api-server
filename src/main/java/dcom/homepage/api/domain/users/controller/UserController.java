@@ -15,8 +15,7 @@ public class UserController {
 
     @GetMapping("/profile/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody()
     public UserProfileDto getProfileByUserId(@PathVariable final String userId) {
-        return userService.getProfileByUserId(userId).get();
+        return userService.getProfileByUserId(userId);
     }
 }
