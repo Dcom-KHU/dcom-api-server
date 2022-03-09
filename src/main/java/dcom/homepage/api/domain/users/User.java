@@ -4,6 +4,9 @@ import dcom.homepage.api.domain.group.Group;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -14,12 +17,13 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 255, nullable = false, name = "userid")
+    @Column(length = 255, nullable = false, name = "userid", unique = true)
     private String userId;
 
     @Column(length = 255, nullable = false)
@@ -87,5 +91,42 @@ public class User {
         this.github = github;
         this.homepage = homepage;
         this.groups = groups;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> auth = new ArrayList<>();
+        if (this.confirm == 1) {
+            auth.add(new SimpleGrantedAuthority("MEMBER"));
+        }
+        if (this.admin == 1) {
+            auth.add(new SimpleGrantedAuthority("ADMIN"));
+        }
+        return auth;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.confirm == 1;
     }
 }
