@@ -1,14 +1,11 @@
 package dcom.homepage.api.domain.users.service;
 
 import dcom.homepage.api.domain.users.User;
-import dcom.homepage.api.domain.users.dto.UserLoginDto;
-import dcom.homepage.api.domain.users.dto.UserProfileDto;
-import dcom.homepage.api.global.exceptions.NotFoundException;
-
-import java.util.Optional;
+import dcom.homepage.api.domain.users.dto.UserRequestDto;
+import dcom.homepage.api.domain.users.dto.UserResponseDto;
 
 public interface UserService {
-    UserProfileDto getProfileByUserId(String userId);
+    UserResponseDto.Profile getProfileByUserId(String userId);
     void save(User user);
     boolean equalsPassword(String password, String encryptedPassword);
 }

@@ -15,10 +15,5 @@ spring:
       hibernate:
         format_sql: true
 jwt:
-  secret:
-    base64:
-      access: dcomdcomdcom
-      refresh: dcooooooooom
-  expiration-seconds:
-    access: 259200
-    refresh: 604800
+  key: dcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcom
+  expiration-seconds: 604800

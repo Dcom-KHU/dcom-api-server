@@ -1,18 +1,15 @@
 package dcom.homepage.api.domain.users.service;
 
 import dcom.homepage.api.domain.users.User;
-import dcom.homepage.api.domain.users.dto.UserLoginDto;
-import dcom.homepage.api.domain.users.dto.UserProfileDto;
+import dcom.homepage.api.domain.users.dto.UserRequestDto;
+import dcom.homepage.api.domain.users.dto.UserResponseDto;
 import dcom.homepage.api.domain.users.repository.UserRepository;
 import dcom.homepage.api.global.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -22,9 +19,10 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserProfileDto getProfileByUserId(String userId) {
+    @Transactional
+    public UserResponseDto.Profile getProfileByUserId(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("유저를 찾지 못했습니다."));
-        return UserProfileDto.of(user);
+        return UserResponseDto.Profile.of(user);
     }
 
     @Override

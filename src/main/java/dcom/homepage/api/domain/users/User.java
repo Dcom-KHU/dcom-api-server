@@ -1,9 +1,14 @@
 package dcom.homepage.api.domain.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.group.Group;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +19,14 @@ import java.util.*;
 
 @Builder
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User implements UserDetails {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -54,11 +62,11 @@ public class User implements UserDetails {
     private Date loginTime;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     private Date createdAt;
 
     @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     private Date updatedAt;
 
     @Column(nullable = true)
@@ -95,7 +103,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> auth = new ArrayList<>();
+        HashSet<GrantedAuthority> auth = new HashSet<>();
         if (this.confirm == 1) {
             auth.add(new SimpleGrantedAuthority("MEMBER"));
         }
