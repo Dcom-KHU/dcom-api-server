@@ -2,16 +2,16 @@ package dcom.homepage.api.domain.users.dto;
 
 import dcom.homepage.api.domain.group.Group;
 import dcom.homepage.api.domain.users.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserResponseDto {
+    @ApiModel(value = "유저 프로필 정보")
     @Builder
     @Getter
     @Setter
@@ -42,5 +42,15 @@ public class UserResponseDto {
                     .map(Profile::of)
                     .collect(Collectors.toList());
         }
+    }
+
+    @ApiModel(value = "유저 회원 가입 정보")
+    @Builder
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Token {
+        @ApiModelProperty(value = "유저 아이디")
+        private String token;
     }
 }

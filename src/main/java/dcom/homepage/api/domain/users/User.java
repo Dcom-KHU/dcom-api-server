@@ -2,10 +2,7 @@ package dcom.homepage.api.domain.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.group.Group;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,6 +18,7 @@ import java.util.*;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
@@ -29,6 +27,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
 
     @Column(length = 255, nullable = false, name = "userid", unique = true)
@@ -55,7 +54,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer admin;
 
-    @Column(length = 100)
+    @Column(length = 100, name = "remember_token")
     private String rememberToken;
 
     @Column(name = "login_time")
@@ -81,34 +80,17 @@ public class User implements UserDetails {
                 inverseJoinColumns = @JoinColumn(name="group_id"))
     private Set<Group> groups = new HashSet<>();
 
-    @Builder
-    public User(Integer id, String userId, String email, String password, String realName, String phone, Integer admissionYear, Integer confirm, Integer admin, String rememberToken, Date loginTime, Date createdAt, Date updatedAt, String github, String homepage, Set<Group> groups) {
-        this.id = id;
-        this.userId = userId;
-        this.email = email;
-        this.password = password;
-        this.realName = realName;
-        this.phone = phone;
-        this.admissionYear = admissionYear;
-        this.confirm = confirm;
-        this.admin = admin;
-        this.rememberToken = rememberToken;
-        this.loginTime = loginTime;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.github = github;
-        this.homepage = homepage;
-        this.groups = groups;
-    }
+    @ElementCollection
+    private List<SimpleGrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         HashSet<GrantedAuthority> auth = new HashSet<>();
         if (this.confirm == 1) {
-            auth.add(new SimpleGrantedAuthority("MEMBER"));
+            auth.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
         }
         if (this.admin == 1) {
-            auth.add(new SimpleGrantedAuthority("ADMIN"));
+            auth.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         return auth;
     }

@@ -1,6 +1,5 @@
 package dcom.homepage.api.global.security.provider;
 
-import dcom.homepage.api.domain.users.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

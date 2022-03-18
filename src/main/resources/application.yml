@@ -17,3 +17,6 @@ spring:
 jwt:
   key: dcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcom
   expiration-seconds: 604800
+logging:
+  level:
+    org.springframework.security: DEBUG
