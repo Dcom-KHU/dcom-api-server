@@ -15,8 +15,11 @@ spring:
       hibernate:
         format_sql: true
 jwt:
-  key: dcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcom
+  key: dcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcomdcom
   expiration-seconds: 604800
 logging:
   level:
     org.springframework.security: DEBUG
+server:
+  error:
+    include-message: always
