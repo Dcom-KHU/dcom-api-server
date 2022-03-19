@@ -7,7 +7,7 @@ import lombok.*;
 
 
 public class UserRequestDto {
-
+    @ApiModel(value = "유저 로그인 정보")
     @Builder
     @Getter @Setter
     @NoArgsConstructor
