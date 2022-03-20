@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    final private UserService userService;
+    private final UserService userService;
 
     @ApiOperation(value = "회원가입 API 입니다.")
     @PostMapping("/register")
