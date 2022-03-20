@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = {"Auth Controller"})
 @RestController
 @RequestMapping("/api/auth")
@@ -20,7 +22,7 @@ public class AuthController {
     @ApiOperation(value = "회원가입 API 입니다.")
     @PostMapping("/register")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public UserResponseDto.Profile register(@ApiParam(value="회원 정보", required = true) @RequestBody final UserRequestDto.Register userDto) {
+    public UserResponseDto.Profile register(@ApiParam(value="회원 정보", required = true) @Valid @RequestBody final UserRequestDto.Register userDto) {
         return userService.register(userDto);
     }
 
