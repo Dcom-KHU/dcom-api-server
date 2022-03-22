@@ -26,35 +26,12 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Order(1)
-    @Configuration
-    public static class SwaggerSecurityConfig extends WebSecurityConfigurerAdapter {
-        private static final RequestMatcher SWAGGER_URLS = new OrRequestMatcher(
-                new AntPathRequestMatcher("/swagger-ui/**")
-        );
-
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
-                    .requestMatchers(SWAGGER_URLS).authenticated()
-                    .and()
-                    .httpBasic();
-        }
-    }
-
-    @Order(2)
     @RequiredArgsConstructor
     @Configuration
     public static class JWTRestSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -73,36 +50,54 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         @Override
-        protected void configure(HttpSecurity httpSecurity) throws Exception {
-            httpSecurity
-                    // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-                    .csrf().disable()
-
-                    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .requestMatcher(PROTECTED_URLS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                     .exceptionHandling()
-                    .accessDeniedHandler(jwtAccessDeniedHandler)
                     .defaultAuthenticationEntryPointFor(jwtAuthenticationEntryPoint, PROTECTED_URLS)
-
-                    // enable h2-console
+                    .accessDeniedHandler(jwtAccessDeniedHandler)
                     .and()
                     .headers()
                     .frameOptions()
                     .sameOrigin()
-
-                    // 세션을 사용하지 않기 때문에 STATELESS로 설정
                     .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                    .and()
+                    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers("/api/auth/**").permitAll()
                     .antMatchers("/api/user/**").permitAll()
-                    .anyRequest().authenticated()
+                    .requestMatchers(PROTECTED_URLS).authenticated()
                     .and()
+                    .csrf().disable()
+                    .formLogin().disable()
+                    .httpBasic().disable()
+                    .logout().disable()
                     .apply(new JwtSecurityConfig(tokenProvider));
         }
     }
 
+    @Order(2)
+    @Configuration
+    public static class SwaggerSecurityConfig extends WebSecurityConfigurerAdapter {
+        private static final RequestMatcher SWAGGER_URLS = new OrRequestMatcher(
+                new AntPathRequestMatcher("/v2/api-docs")
+        );
+
+        @Override
+        public void configure(WebSecurity web) {
+            web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .requestMatcher(SWAGGER_URLS)
+                    .authorizeRequests()
+                    .requestMatchers(SWAGGER_URLS).hasRole("ADMIN")
+                    .and()
+                    .httpBasic();
+        }
+    }
 }

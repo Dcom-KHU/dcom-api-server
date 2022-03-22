@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String userId) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthoritiesByUserId(userId)
+        return userRepository.findByUserId(userId)
                 .map(user -> createUser(userId, user))
                 .orElseThrow(() -> new UsernameNotFoundException(userId + " 아이디를 가진 유저를 찾을 수 없습니다."));
     }
