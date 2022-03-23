@@ -1,11 +1,18 @@
 package dcom.homepage.api.domain.group;
 
-import lombok.NoArgsConstructor;
+import dcom.homepage.api.domain.users.User;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Builder
+@Getter
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tech_group")
 public class Group {
 
@@ -24,4 +31,10 @@ public class Group {
 
     @Column(nullable = false)
     private String imageUri;
+
+    @ManyToMany
+    @JoinTable(name = "tech_group_user",
+            joinColumns = @JoinColumn(name="group_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id"))
+    private Set<User> users = new HashSet<>();
 }
