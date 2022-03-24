@@ -41,4 +41,12 @@ public class GroupServiceImpl implements GroupService {
         );
         return GroupResponseDto.Info.of(group);
     }
+
+    @Override
+    public GroupResponseDto.Info addUserToGroup(User user, Group group) {
+        if (group.getUsers().add(user))
+            return GroupResponseDto.Info.of(groupRepository.save(group));
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "유저가 이미 존재합니다.");
+    }
 }

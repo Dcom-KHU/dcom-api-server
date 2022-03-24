@@ -11,4 +11,5 @@ public interface GroupService {
     List<GroupResponseDto.SimpleInfo> getGroupList();
     List<User> getUserList(Group group);
     GroupResponseDto.Info getGroupByName(String name);
+    GroupResponseDto.Info addUserToGroup(User user, Group group);
 }
