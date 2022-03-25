@@ -44,6 +44,31 @@ public class UserResponseDto {
         }
     }
 
+    @ApiModel(value = "유저 프로필 정보")
+    @Builder
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    public static class SimpleProfile {
+        private final String userId;
+        private final Integer admissionYear;
+        private final String realName;
+
+        public static SimpleProfile of(User user) {
+            return SimpleProfile.builder()
+                    .userId(user.getUserId())
+                    .admissionYear(user.getAdmissionYear())
+                    .realName(user.getRealName())
+                    .build();
+        }
+
+        public static List<SimpleProfile> of(List<User> userSimpleProfileDtoList) {
+            return userSimpleProfileDtoList.stream()
+                    .map(SimpleProfile::of)
+                    .collect(Collectors.toList());
+        }
+    }
+
     @ApiModel(value = "유저 회원 가입 정보")
     @Builder
     @Getter @Setter
