@@ -3,8 +3,12 @@ package dcom.homepage.api.domain.study;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.users.User;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +18,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "study_group")
 public class Study {
     @JsonIgnore
@@ -29,6 +34,12 @@ public class Study {
 
     @Column(nullable = true)
     private String description;
+
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Date endDate;
 
     @ManyToOne
     private User owner;
@@ -50,4 +61,12 @@ public class Study {
             joinColumns = @JoinColumn(name="study_group_id"),
             inverseJoinColumns = @JoinColumn(name="user_id"))
     private Set<User> pendingUsers = new HashSet<>();
+
+    @Column
+    @CreatedDate
+    private Date createdAt;
+
+    @Column
+    @LastModifiedDate
+    private Date updatedAt;
 }
