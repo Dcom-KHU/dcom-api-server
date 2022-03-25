@@ -2,6 +2,7 @@ package dcom.homepage.api.domain.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.group.Group;
+import dcom.homepage.api.domain.study.Study;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -74,11 +75,29 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private String homepage;
 
+    @Column(nullable = true)
+    private String baekjoon;
+
+    @OneToMany
+    private Set<Study> ownStudies = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "tech_group_user",
                 joinColumns = @JoinColumn(name="user_id"),
                 inverseJoinColumns = @JoinColumn(name="group_id"))
     private Set<Group> groups = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "study_group_owner",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="study_group_id"))
+    private Set<Study> managingStudies = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "study_group_user",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="study_group_id"))
+    private Set<Study> studies = new HashSet<>();
 
     @ElementCollection
     private List<SimpleGrantedAuthority> authorities;
