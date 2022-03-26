@@ -1,8 +1,6 @@
 package dcom.homepage.api.domain.study;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.users.User;
-import io.swagger.models.auth.In;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +20,6 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "study_group")
 public class Study {
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
