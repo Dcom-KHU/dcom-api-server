@@ -2,6 +2,7 @@ package dcom.homepage.api.domain.study;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dcom.homepage.api.domain.users.User;
+import io.swagger.models.auth.In;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -40,6 +41,15 @@ public class Study {
 
     @Column(nullable = false)
     private Date endDate;
+
+    @Column(nullable = false)
+    private Date vacationStartDate;
+
+    @Column(nullable = false)
+    private Date vacationEndDate;
+
+    @Column(nullable = true)
+    private Integer cycle;
 
     @ManyToOne
     private User owner;
