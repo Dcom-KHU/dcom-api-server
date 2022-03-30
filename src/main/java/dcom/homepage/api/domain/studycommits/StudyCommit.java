@@ -1,4 +1,4 @@
-package dcom.homepage.api.domain.items;
+package dcom.homepage.api.domain.studycommits;
 
 import dcom.homepage.api.domain.study.Study;
 import dcom.homepage.api.domain.users.User;
