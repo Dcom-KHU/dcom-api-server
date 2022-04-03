@@ -24,10 +24,8 @@ public abstract class StudyCommit {
     private Date summitDate;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private Study study;
 }
