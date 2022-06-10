@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GroupResponseDto {
 
@@ -29,6 +30,12 @@ public class GroupResponseDto {
                     .imageName(group.getImageName())
                     .imageUri(group.getImageUri())
                     .build();
+        }
+
+        public static Set<SimpleInfo> of(Set<Group> group) {
+            return group.stream()
+                    .map(SimpleInfo::of)
+                    .collect(Collectors.toSet());
         }
     }
 
@@ -51,6 +58,12 @@ public class GroupResponseDto {
                     .imageUri(group.getImageUri())
                     .users(group.getUsers())
                     .build();
+        }
+
+        public static Set<Info> of(Set<Group> group) {
+            return group.stream()
+                    .map(Info::of)
+                    .collect(Collectors.toSet());
         }
     }
 }

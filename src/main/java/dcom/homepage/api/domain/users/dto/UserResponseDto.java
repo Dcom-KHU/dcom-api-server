@@ -1,6 +1,7 @@
 package dcom.homepage.api.domain.users.dto;
 
 import dcom.homepage.api.domain.group.Group;
+import dcom.homepage.api.domain.group.dto.GroupResponseDto;
 import dcom.homepage.api.domain.users.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,7 +24,7 @@ public class UserResponseDto {
         private final String realName;
         private final String github;
         private final String homepage;
-        private final Set<Group> groups;
+        private final Set<GroupResponseDto.SimpleInfo> groups;
 
         public static Profile of(User user) {
             return Profile.builder()
@@ -33,7 +34,7 @@ public class UserResponseDto {
                     .realName(user.getRealName())
                     .github(user.getGithub())
                     .homepage(user.getHomepage())
-                    .groups(user.getGroups())
+                    .groups(GroupResponseDto.SimpleInfo.of(user.getGroups()))
                     .build();
         }
 
@@ -41,6 +42,12 @@ public class UserResponseDto {
             return userProfileDtoList.stream()
                     .map(Profile::of)
                     .collect(Collectors.toList());
+        }
+
+        public static Set<Profile> of(Set<User> userProfileDtoList) {
+            return userProfileDtoList.stream()
+                    .map(Profile::of)
+                    .collect(Collectors.toSet());
         }
     }
 
@@ -66,6 +73,12 @@ public class UserResponseDto {
             return userSimpleProfileDtoList.stream()
                     .map(SimpleProfile::of)
                     .collect(Collectors.toList());
+        }
+
+        public static Set<SimpleProfile> of(Set<User> userSimpleProfileDtoList) {
+            return userSimpleProfileDtoList.stream()
+                    .map(SimpleProfile::of)
+                    .collect(Collectors.toSet());
         }
     }
 
