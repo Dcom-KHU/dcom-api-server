@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     public static class JWTRestSecurityConfig extends WebSecurityConfigurerAdapter {
         private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
-                new AntPathRequestMatcher("/api/**")
+                new AntPathRequestMatcher("/api/**"), new AntPathRequestMatcher("/error")
         );
 
         private final TokenProvider tokenProvider;

@@ -12,11 +12,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.*;
 
 @Builder
-@Getter
+@Getter @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

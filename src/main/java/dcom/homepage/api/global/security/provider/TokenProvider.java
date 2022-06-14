@@ -72,10 +72,7 @@ public class TokenProvider implements InitializingBean {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        // 여기 이 유저는 Domain User가 아님! Spring Security에서 제공하는 유저 객체임!
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(claims.getSubject(), token, authorities);
     }
 
     public boolean validateToken(String token) {

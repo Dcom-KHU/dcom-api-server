@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void changePassword(String currentPassword, String newPassword) {
+        User user = getMyUserWithAuthorities();
+
+        if (equalsPassword(currentPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "현재 비밀번호를 잘못 입력 하였습니다.");
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public String login(UserRequestDto.Login userDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDto.getUserId(), userDto.getPassword());
@@ -81,8 +95,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public User getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUserId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다.")
+        String username = SecurityUtil.getCurrentUsername().orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요 합니다.")
+        );
+
+        return userRepository.findOneWithAuthoritiesByUserId(username).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재 하지 않는 유저 입니다.")
         );
     }
 }
