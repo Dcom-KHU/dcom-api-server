@@ -1,5 +1,6 @@
 package dcom.homepage.api.domain.jokbo.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import dcom.homepage.api.domain.users.User;
 import dcom.homepage.api.domain.users.dto.UserResponseDto;
 import io.swagger.annotations.ApiModel;
@@ -22,6 +23,7 @@ public class JokboResponseDto {
         private Integer contentCount;
 
         @Builder
+        @QueryProjection
         public Simple(Integer id, User writer, String professor, String course, LocalDateTime recentUpload, Integer contentCount) {
             this.id = id;
             this.writer = UserResponseDto.SimpleProfile.of(writer);
