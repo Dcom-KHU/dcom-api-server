@@ -31,4 +31,14 @@ public class JokboRequestDto {
         @Positive
         private Integer pageSize;
     }
+
+    @ApiModel(value = "족보 등록 DTO")
+    public static class Post {
+
+        @ApiModelProperty(value = "교수명", required = true)
+        private String professor;
+
+        @ApiModelProperty(value = "강좌명", required = true)
+        private String course;
+    }
 }
