@@ -1,5 +1,6 @@
 package dcom.homepage.api.domain.jokbo;
 
+import dcom.homepage.api.domain.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,6 +25,10 @@ public class JokboContent {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "jokbo_writer")
+    private User writer;
+
     @Column
     private Integer year;
 
@@ -31,11 +37,11 @@ public class JokboContent {
 
     @Column(name = "created_at")
     @CreatedDate
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at")
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "jokbo_id")
