@@ -1,6 +1,7 @@
 package dcom.homepage.api.domain.jokbo.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import dcom.homepage.api.domain.jokbo.Jokbo;
 import dcom.homepage.api.domain.jokbo.JokboContent;
 import dcom.homepage.api.domain.users.User;
 import dcom.homepage.api.domain.users.dto.UserResponseDto;
@@ -57,6 +58,18 @@ public class JokboResponseDto {
             this.recentUpload = recentUpload;
             this.contentCount = contentCount;
             this.contents = JokboContentResponseDto.of(contents);
+        }
+
+        public static Info of(Jokbo jokbo) {
+            return Info.builder()
+                    .id(jokbo.getId())
+                    .writer(jokbo.getWriter())
+                    .professor(jokbo.getProfessor())
+                    .course(jokbo.getCourse())
+                    .recentUpload(jokbo.getRecentUpload())
+                    .contentCount(jokbo.getContentCount())
+                    .contents(jokbo.getContents())
+                    .build();
         }
     }
 }

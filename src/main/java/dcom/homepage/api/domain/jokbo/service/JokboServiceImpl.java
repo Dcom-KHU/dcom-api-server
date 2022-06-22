@@ -45,4 +45,25 @@ public class JokboServiceImpl implements JokboService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "에러가 발생 했습니다, 중복된 강의-교수 족보가 존재 하는지 확인 해 주세요.");
         }
     }
+
+    @Override
+    @Transactional
+    public JokboResponseDto.Info putJokbo(JokboRequestDto.Post post, Integer id) {
+        User user = userService.getMyUserWithAuthorities();
+
+        Jokbo jokbo = jokboRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "족보를 찾을 수 없습니다."
+        ));
+
+        if (jokbo.getWriter() != user) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "본인의 족보만 수정 할 수 있습니다."
+            );
+        }
+
+        jokbo.setProfessor(post.getProfessor());
+        jokbo.setCourse(post.getCourse());
+
+        return JokboResponseDto.Info.of(jokboRepository.save(jokbo));
+    }
 }

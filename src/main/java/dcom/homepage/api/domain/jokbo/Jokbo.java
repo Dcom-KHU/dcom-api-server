@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Builder
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
