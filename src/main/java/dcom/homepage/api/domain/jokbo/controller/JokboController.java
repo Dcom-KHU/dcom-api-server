@@ -10,4 +10,5 @@ public interface JokboController {
     ResponseEntity<Page<JokboResponseDto.Simple>> searchAll(JokboRequestDto.Search search);
     ResponseEntity<Integer> postJokbo(JokboRequestDto.Post post);
     ResponseEntity<JokboResponseDto.Info> putJokbo(JokboRequestDto.Post post, Integer id);
+    ResponseEntity<Void> deleteJokbo(Integer id);
 }

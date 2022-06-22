@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class JokboControllerImpl implements JokboController {
     private final JokboService jokboService;
 
+
     @ApiOperation(value = "Jokbo에 대한 등록을 수행 합니다.")
     @PostMapping("")
     @ApiResponses(value = {
@@ -44,9 +45,26 @@ public class JokboControllerImpl implements JokboController {
     @PutMapping("/{id}")
     @ApiResponses(value = {
             @ApiResponse(code = 202, message = "족보 변경 성공, 족보 정보 반환"),
-            @ApiResponse(code = 400, message = "족보 변경 실패")
+            @ApiResponse(code = 400, message = "족보 변경 실패"),
+            @ApiResponse(code = 401, message = "로그인 필요"),
+            @ApiResponse(code = 403, message = "본인의 족보만 수정 가능"),
+            @ApiResponse(code = 404, message = "족보 조회 실패")
     })
     public ResponseEntity<JokboResponseDto.Info> putJokbo(JokboRequestDto.Post post, @PathVariable Integer id) {
         return ResponseEntity.accepted().body(jokboService.putJokbo(post, id));
+    }
+
+    @ApiOperation(value = "Jokbo에 대한 삭제를 수행 합니다.")
+    @DeleteMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "족보 삭제 성공"),
+            @ApiResponse(code = 400, message = "족보 삭제 실패"),
+            @ApiResponse(code = 401, message = "로그인 필요"),
+            @ApiResponse(code = 403, message = "본인의 족보만 수정 가능"),
+            @ApiResponse(code = 404, message = "족보 조회 실패")
+    })
+    public ResponseEntity<Void> deleteJokbo(@PathVariable Integer id) {
+        jokboService.deleteJokbo(id);
+        return ResponseEntity.accepted().build();
     }
 }
