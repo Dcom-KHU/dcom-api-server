@@ -9,9 +9,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/jokbo")
 public class JokboControllerImpl implements JokboController {
     private final JokboService jokboService;
+
+    @ApiOperation(value = "Jokbo에 대한 등록을 수행 합니다.")
+    @PostMapping("")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "족보 등록 성공, 족보 ID 반환"),
+            @ApiResponse(code = 400, message = "족보 등록 실패")
+    })
+    public ResponseEntity<Integer> postJokbo(JokboRequestDto.Post post) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(jokboService.postJokbo(post));
+    }
 
     @ApiOperation(value = "Jokbo에 대한 검색을 수행 합니다.")
     @GetMapping("/list")

@@ -8,4 +8,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface JokboController {
     ResponseEntity<Page<JokboResponseDto.Simple>> searchAll(JokboRequestDto.Search search);
+    ResponseEntity<Integer> postJokbo(JokboRequestDto.Post post);
 }
