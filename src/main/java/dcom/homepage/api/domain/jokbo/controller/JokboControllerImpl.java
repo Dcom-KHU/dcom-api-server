@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"Jokbo Controller"})
 @RestController
@@ -41,5 +38,15 @@ public class JokboControllerImpl implements JokboController {
     })
     public ResponseEntity<Page<JokboResponseDto.Simple>> searchAll(JokboRequestDto.Search search) {
         return ResponseEntity.ok(jokboService.searchAll(search));
+    }
+
+    @ApiOperation(value = "Jokbo에 대한 변경을 수행 합니다.")
+    @PutMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "족보 변경 성공, 족보 정보 반환"),
+            @ApiResponse(code = 400, message = "족보 변경 실패")
+    })
+    public ResponseEntity<JokboResponseDto.Info> putJokbo(JokboRequestDto.Post post, @PathVariable Integer id) {
+        return ResponseEntity.accepted().body(jokboService.putJokbo(post, id));
     }
 }
