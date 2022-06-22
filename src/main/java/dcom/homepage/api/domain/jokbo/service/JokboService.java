@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 public interface JokboService {
     Page<JokboResponseDto.Simple> searchAll(JokboRequestDto.Search search);
     Integer postJokbo(JokboRequestDto.Post post);
+    JokboResponseDto.Info getJokbo(Integer id);
     JokboResponseDto.Info putJokbo(JokboRequestDto.Post post, Integer id);
     void deleteJokbo(Integer id);
 }

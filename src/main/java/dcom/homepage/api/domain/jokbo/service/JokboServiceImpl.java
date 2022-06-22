@@ -47,6 +47,14 @@ public class JokboServiceImpl implements JokboService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public JokboResponseDto.Info getJokbo(Integer id) {
+        return JokboResponseDto.Info.of(jokboRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "족보를 찾을 수 없습니다."
+        )));
+    }
+
+    @Override
     @Transactional
     public JokboResponseDto.Info putJokbo(JokboRequestDto.Post post, Integer id) {
         User user = userService.getMyUserWithAuthorities();

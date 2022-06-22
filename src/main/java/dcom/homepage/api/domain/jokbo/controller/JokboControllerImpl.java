@@ -20,6 +20,16 @@ import org.springframework.web.bind.annotation.*;
 public class JokboControllerImpl implements JokboController {
     private final JokboService jokboService;
 
+    @ApiOperation(value = "Jokbo에 대한 조회를 수행 합니다.")
+    @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 400, message = "요청 실패"),
+            @ApiResponse(code = 404, message = "족보 조회 실패")
+    })
+    public ResponseEntity<JokboResponseDto.Info> getJokbo(@PathVariable Integer id) {
+        return ResponseEntity.accepted().body(jokboService.getJokbo(id));
+    }
 
     @ApiOperation(value = "Jokbo에 대한 등록을 수행 합니다.")
     @PostMapping("")
