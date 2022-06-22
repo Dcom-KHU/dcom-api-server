@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -33,12 +34,15 @@ public class JokboRequestDto {
     }
 
     @ApiModel(value = "족보 등록 DTO")
+    @Getter @Setter
     public static class Post {
 
         @ApiModelProperty(value = "교수명", required = true)
+        @NotBlank
         private String professor;
 
         @ApiModelProperty(value = "강좌명", required = true)
+        @NotBlank
         private String course;
     }
 }
