@@ -46,4 +46,6 @@ public class JokboContent {
     @ManyToOne
     @JoinColumn(name = "jokbo_id")
     private Jokbo jokbo;
+
+
 }

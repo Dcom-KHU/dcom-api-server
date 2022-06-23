@@ -1,8 +1,12 @@
 package dcom.homepage.api.domain.jokbo.service;
 
 import dcom.homepage.api.domain.jokbo.Jokbo;
+import dcom.homepage.api.domain.jokbo.JokboContent;
+import dcom.homepage.api.domain.jokbo.dto.JokboContentRequestDto;
+import dcom.homepage.api.domain.jokbo.dto.JokboContentResponseDto;
 import dcom.homepage.api.domain.jokbo.dto.JokboRequestDto;
 import dcom.homepage.api.domain.jokbo.dto.JokboResponseDto;
+import dcom.homepage.api.domain.jokbo.repository.JokboContentRepository;
 import dcom.homepage.api.domain.jokbo.repository.JokboQueryRepository;
 import dcom.homepage.api.domain.jokbo.repository.JokboRepository;
 import dcom.homepage.api.domain.users.User;
@@ -20,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class JokboServiceImpl implements JokboService {
     private final JokboRepository jokboRepository;
     private final JokboQueryRepository jokboQueryRepository;
+    private final JokboContentRepository jokboContentRepository;
     private final UserService userService;
 
     @Override
@@ -91,5 +96,34 @@ public class JokboServiceImpl implements JokboService {
         }
 
         jokboRepository.delete(jokbo);
+    }
+
+    @Override
+    @Transactional
+    public Integer postJokboContent(JokboContentRequestDto data, Integer id) {
+        User user = userService.getMyUserWithAuthorities();
+
+        Jokbo jokbo = jokboRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "족보를 찾을 수 없습니다."
+        ));
+
+        JokboContent jokboContent = JokboContent.builder()
+                .writer(user)
+                .jokbo(jokbo)
+                .content(data.getContent())
+                .semester(data.getSemester())
+                .build();
+
+        return jokboContentRepository.save(jokboContent).getId();
+    }
+
+    @Override
+    public JokboContentResponseDto putJokboContent(JokboContentRequestDto data, Integer id) {
+        return null;
+    }
+
+    @Override
+    public void deleteJokboContent(Integer id) {
+
     }
 }

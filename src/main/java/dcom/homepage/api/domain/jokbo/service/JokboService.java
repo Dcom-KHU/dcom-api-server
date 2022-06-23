@@ -1,6 +1,7 @@
 package dcom.homepage.api.domain.jokbo.service;
 
 import dcom.homepage.api.domain.jokbo.JokboContent;
+import dcom.homepage.api.domain.jokbo.dto.JokboContentRequestDto;
 import dcom.homepage.api.domain.jokbo.dto.JokboContentResponseDto;
 import dcom.homepage.api.domain.jokbo.dto.JokboRequestDto;
 import dcom.homepage.api.domain.jokbo.dto.JokboResponseDto;
@@ -12,4 +13,7 @@ public interface JokboService {
     JokboResponseDto.Info getJokbo(Integer id);
     JokboResponseDto.Info putJokbo(JokboRequestDto.Post post, Integer id);
     void deleteJokbo(Integer id);
+    Integer postJokboContent(JokboContentRequestDto data, Integer id);
+    JokboContentResponseDto putJokboContent(JokboContentRequestDto data, Integer id);
+    void deleteJokboContent(Integer id);
 }
