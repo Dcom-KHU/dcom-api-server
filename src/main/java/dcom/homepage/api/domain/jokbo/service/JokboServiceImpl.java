@@ -124,6 +124,18 @@ public class JokboServiceImpl implements JokboService {
 
     @Override
     public void deleteJokboContent(Integer id) {
+        User user = userService.getMyUserWithAuthorities();
 
+        JokboContent jokboContent = jokboContentRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "해당 족보 글을 찾을 수 없습니다."
+        ));
+
+        if (jokboContent.getWriter() != user) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "본인의 족보 글만 삭제 할 수 있습니다."
+            );
+        }
+
+        jokboContentRepository.delete(jokboContent);
     }
 }
