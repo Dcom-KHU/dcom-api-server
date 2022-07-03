@@ -24,6 +24,7 @@ public class UserResponseDto {
         private String realName;
         private String github;
         private String homepage;
+        private String description;
         private Set<GroupResponseDto.SimpleInfo> groups;
 
         public static Profile of(User user) {
@@ -34,6 +35,7 @@ public class UserResponseDto {
                     .realName(user.getRealName())
                     .github(user.getGithub())
                     .homepage(user.getHomepage())
+                    .description(user.getDescription())
                     .groups(GroupResponseDto.SimpleInfo.of(user.getGroups()))
                     .build();
         }
