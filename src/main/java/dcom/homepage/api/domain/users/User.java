@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @Column(length = 255, nullable = false)
     private String phone;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String description;
 
     @Column(nullable = false, name = "admissionyear")

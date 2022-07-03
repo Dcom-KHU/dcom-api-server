@@ -41,6 +41,10 @@ public class UserRequestDto {
         @ApiModelProperty(value = "학번", required = true)
         private Integer admissionYear;
 
+        @NotNull
+        @ApiModelProperty(value = "설명", required = true)
+        private String description;
+
         @NotEmpty @Email
         @ApiModelProperty(value = "이메일", required = true)
         private String email;
